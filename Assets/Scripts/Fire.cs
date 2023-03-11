@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Fire : TileBehaviour
@@ -24,29 +25,24 @@ public class Fire : TileBehaviour
     {
         foreach (Vector2Int direction in fourDirections)
         {
-            //if active tile in that direction
-            if (Tile.ActiveTiles.ContainsKey(tilePosition + direction))
+            //get active tile in that direction
+            if (!Tile.ActiveTiles.TryGetValue(tilePosition + direction, out Tile tile))
             {
-                //set up check
-                bool flammable = true;
-                //check every attached object on the tile
-                foreach (TileBehaviour tile in Tile.ActiveTiles[tilePosition + direction].attachedObjects)
-                {
-                    //if there are no fire or wall objects attached
-                    if (tile is Fire || tile is Wall)
-                    {
-                        //makes tile inflammable
-                        flammable = false;
-                        break;
-                    }
-                }
-                //if flammable, instantiate fire
-                if (flammable)
-                {
-                    Instantiate(fireTilePrefab, (Vector2)(tilePosition + direction), Quaternion.identity);
-                }
+                //if the tile doesn't exist, skip
+                continue;
             }
-            //else do nothing
+            if (tile.attachedObjects.OfType<Fire>().Any())
+            {
+                //if the tile is on fire, skip
+                continue;
+            }
+            if (tile.attachedObjects.OfType<Wall>().Any())
+            {
+                //if the tile is a wall, skip
+                continue;
+            }
+            //if all looks good, spawn new fire
+            Instantiate(fireTilePrefab, (Vector2)(tilePosition + direction), Quaternion.identity);
         }
     }
 }

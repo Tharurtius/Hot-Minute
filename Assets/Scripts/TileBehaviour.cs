@@ -14,7 +14,7 @@ public class TileBehaviour : MonoBehaviour
         Tile.ActiveTiles[tilePosition].attachedObjects.Add(this);
         transform.position = position;
     }
-    protected Vector2Int tilePosition = Vector2Int.zero;
+    private Vector2Int tilePosition = Vector2Int.zero;
     public Vector2 position
     {
         get { return tilePosition; }
@@ -47,7 +47,7 @@ public class TileBehaviour : MonoBehaviour
 public class Tile
 {
     public static Dictionary<Vector2Int, Tile> ActiveTiles = new Dictionary<Vector2Int, Tile>();
-    Vector2Int position = Vector2Int.zero;
+    public Vector2Int position = Vector2Int.zero;
     public List<TileBehaviour> attachedObjects = new List<TileBehaviour>();
     #region Constructors
     public Tile(int x, int y)

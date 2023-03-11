@@ -26,7 +26,7 @@ public class Fire : TileBehaviour
         foreach (Vector2Int direction in fourDirections)
         {
             //get active tile in that direction
-            if (!Tile.ActiveTiles.TryGetValue(tilePosition + direction, out Tile tile))
+            if (!Tile.ActiveTiles.TryGetValue(positionInt + direction, out Tile tile))
             {
                 //if the tile doesn't exist, skip
                 continue;
@@ -42,7 +42,7 @@ public class Fire : TileBehaviour
                 continue;
             }
             //if all looks good, spawn new fire
-            Instantiate(fireTilePrefab, (Vector2)(tilePosition + direction), Quaternion.identity);
+            Instantiate(fireTilePrefab, position + direction, Quaternion.identity);
         }
     }
 }

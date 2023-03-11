@@ -4,6 +4,29 @@ using UnityEngine;
 
 public class RoomGenerator : TileBehaviour
 {
+    #region Singelton
+    private static RoomGenerator _singleton;
+    public static RoomGenerator Singleton
+    {
+        get { return _singleton; }
+        set
+        {
+            if (_singleton == null)
+            {
+                _singleton = value;
+            }
+            else if (value == null)
+            {
+                Debug.LogWarning($"wtf you doing setting {nameof(RoomGenerator)}'s singleton to nothing??");
+            }
+            else if (value != _singleton)
+            {
+                Debug.LogWarning($"{nameof(value)} already exists in the scene\nDeleting duplicate...");
+                Destroy(value);
+            }
+        }
+    }
+    #endregion
     [SerializeField] public Vector2Int minRoomSize = Vector2Int.one * 5;
     [SerializeField] public Vector2Int maxRoomSize = Vector2Int.one * 10;
     private Vector2Int roomSize = Vector2Int.zero;
@@ -20,6 +43,10 @@ public class RoomGenerator : TileBehaviour
     {
         base.OnEnable();
         position = Vector2.zero;
+    }
+    private void OnValidate()
+    {
+        Singleton = this;
     }
     private void Generate(Vector2Int sizeToGenerate)
     {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 public class TileBehaviour : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class TileBehaviour : MonoBehaviour
             Tile.ActiveTiles.Add(tilePosition, new Tile(tilePosition));
         }
         Tile.ActiveTiles[tilePosition].attachedObjects.Add(this);
-        transform.position = (Vector2)tilePosition;
+        transform.position = position;
     }
     protected Vector2Int tilePosition = Vector2Int.zero;
     public Vector2 position

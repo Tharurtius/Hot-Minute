@@ -13,7 +13,7 @@ public class TileBehaviour : MonoBehaviour
         Tile.ActiveTiles[tilePosition].attachedObjects.Add(this);
         transform.position = (Vector2)tilePosition;
     }
-    private Vector2Int tilePosition = Vector2Int.zero;
+    protected Vector2Int tilePosition = Vector2Int.zero;
     public Vector2 position
     {
         get { return tilePosition; }

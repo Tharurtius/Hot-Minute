@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Fire : TileBehaviour
 {
-    [SerializeField] private Vector2Int[] fourDirections;//set up in the editor
+    private Vector2Int[] fourDirections = new Vector2Int[4] {Vector2Int.up, Vector2Int.down , Vector2Int.left , Vector2Int.right };//set up in the editor (Tim: DO NOT)
     [SerializeField] private GameObject fireTilePrefab;
 
 
@@ -43,7 +43,7 @@ public class Fire : TileBehaviour
                 //if flammable, instantiate fire
                 if (flammable)
                 {
-                    Instantiate(fireTilePrefab, (Vector3Int)(tilePosition + direction), Quaternion.identity);
+                    Instantiate(fireTilePrefab, (Vector2)(tilePosition + direction), Quaternion.identity);
                 }
             }
             //else do nothing

@@ -19,13 +19,11 @@ public class TileBehaviour : MonoBehaviour
         get { return tilePosition; }
         set { SetPosition(Vector2Int.RoundToInt(value)); }
     }
-    /*
-    public Vector2Int position
+    public Vector2Int positionInt
     {
         get { return tilePosition; }
-        set { SetPosition(position); }
+        set { SetPosition(value); }
     }
-    */
     private void SetPosition(Vector2Int newPosition)
     {
         Tile.ActiveTiles[tilePosition].attachedObjects.Remove(this);

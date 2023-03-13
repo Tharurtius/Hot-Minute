@@ -6,43 +6,73 @@ using UnityEngine;
 public class Fire : TileBehaviour
 {
     private Vector2Int[] fourDirections = new Vector2Int[4] {Vector2Int.up, Vector2Int.down , Vector2Int.left , Vector2Int.right };//set up in the editor (Tim: DO NOT)
-    [SerializeField] private GameObject fireTilePrefab;
 
-
-    //test shit, remove in actual game
-    float testTimer = 5f;
+    Vector2 minMaxTime = new Vector2(3f, 5f);
+    float timer;
+    private void Start()
+    {
+        ResetTimer();
+    }
     private void Update()
     {
-        testTimer -= Time.deltaTime;
-        if (testTimer <= 0f)
+        timer -= Time.deltaTime;
+        if (timer <= 0f)
         {
             Spread();
-            testTimer = 5f;
+            ResetTimer();
         }
     }
-
+    private void ResetTimer()
+    {
+        timer = Random.Range(minMaxTime.x, minMaxTime.y);
+    }
     public void Spread()
     {
         foreach (Vector2Int direction in fourDirections)
         {
-            //get active tile in that direction
-            if (!Tile.ActiveTiles.TryGetValue(positionInt + direction, out Tile tile))
+            if (TrySpread(positionInt + direction))
             {
-                //if the tile doesn't exist, skip
-                continue;
+                return;
             }
-            if (tile.attachedObjects.OfType<Fire>().Any())
-            {
-                //if the tile is on fire, skip
-                continue;
-            }
-            if (tile.attachedObjects.OfType<Wall>().Any())
-            {
-                //if the tile is a wall, skip
-                continue;
-            }
-            //if all looks good, spawn new fire
-            Instantiate(fireTilePrefab, position + direction, Quaternion.identity);
         }
+    }
+    public static bool TrySpread(Vector2Int position)
+    {
+        if (!CanSpread(position))
+        {
+            return false;
+        }
+        //finally try see if RNG is on the player's side
+        if (Random.value > 0.25f)
+        {
+            return false;
+        }
+        //if all looks good, spawn new fire
+        Instantiate(GameManager.Singleton.firePrefab, (Vector2)position, Quaternion.identity);
+        return true;
+    }
+    public static void ForceSpread(Vector2Int position)
+    {
+        Instantiate(GameManager.Singleton.firePrefab, (Vector2)position, Quaternion.identity);
+    }
+    public static bool CanSpread(Vector2Int position)
+    {
+        //get active tile in that position
+        if (!Tile.ActiveTiles.TryGetValue(position, out Tile tile))
+        {
+            //if the tile doesn't exist, skip
+            return false;
+        }
+        if (tile.attachedObjects.OfType<Fire>().Any())
+        {
+            //if the tile is on fire, skip
+            return false;
+        }
+        if (tile.attachedObjects.OfType<Wall>().Any())
+        {
+            //if the tile is a wall, skip
+            return false;
+        }
+        return true;
     }
 }

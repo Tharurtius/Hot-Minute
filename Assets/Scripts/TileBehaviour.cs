@@ -58,24 +58,21 @@ public class TileBehaviour : MonoBehaviour
 public class Tile
 {
     public static Dictionary<Vector2Int, Tile> ActiveTiles = new Dictionary<Vector2Int, Tile>();
-    public Vector2Int positionInt = Vector2Int.zero;
-    public Vector2 position = Vector2Int.zero;
+    public readonly Vector2Int positionInt = Vector2Int.zero;
+    public Vector2 position { get => positionInt; }
     public List<TileBehaviour> attachedObjects = new List<TileBehaviour>();
     #region Constructors
     public Tile(int x, int y)
     {
         positionInt = new Vector2Int(x, y);
-        position = positionInt;
     }
     public Tile(float x, float y)
     {
         positionInt = new Vector2Int((int)x, (int)y);
-        position = positionInt;
     }
     public Tile(Vector2Int vector2Int)
     {
         positionInt = vector2Int;
-        position = positionInt;
     }
     #endregion
 }

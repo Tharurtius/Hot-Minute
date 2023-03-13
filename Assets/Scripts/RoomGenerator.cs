@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class RoomGenerator : TileBehaviour
 {
@@ -30,16 +31,14 @@ public class RoomGenerator : TileBehaviour
     [SerializeField] public Vector2Int minRoomSize = Vector2Int.one * 5;
     [SerializeField] public Vector2Int maxRoomSize = Vector2Int.one * 10;
     private Vector2Int roomSize = Vector2Int.zero;
-    [Header("Prefabs")]
-    [SerializeField] public GameObject wallPrefab;
-    [SerializeField] public GameObject floorPrefab;
-    [SerializeField] public GameObject doorPrefab;
+    private TileBehaviour exit;
     //[Header("")]
     private void Start()
     {
         roomSize = new Vector2Int(Random.Range(minRoomSize.x, maxRoomSize.x), Random.Range(minRoomSize.y, maxRoomSize.y));
         GenerateWallsAndFloors(roomSize + Vector2Int.one * 2);
         GenerateDoor();
+        GenerateFire(GameManager.Singleton.initialFireCount);
     }
     private void OnValidate()
     {
@@ -49,21 +48,21 @@ public class RoomGenerator : TileBehaviour
     {
         for (int j = 0; j < sizeToGenerate.y; j++)
         {
-            Instantiate(wallPrefab, new Vector2(0, j), Quaternion.identity);
+            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(0, j), Quaternion.identity);
         }
         for (int i = 1; i < sizeToGenerate.x - 1; i++)
         {
-            Instantiate(wallPrefab, new Vector2(i, 0), Quaternion.identity);
+            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(i, 0), Quaternion.identity);
             for (int j = 1; j < sizeToGenerate.y - 1; j++)
             {
-                Instantiate(floorPrefab, new Vector2(i, j), Quaternion.identity);
+                Instantiate(GameManager.Singleton.floorPrefab, new Vector2(i, j), Quaternion.identity);
             }
-            Instantiate(wallPrefab, new Vector2(i, sizeToGenerate.y - 1), Quaternion.identity);
+            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(i, sizeToGenerate.y - 1), Quaternion.identity);
 
         }
         for (int j = 0; j < sizeToGenerate.y; j++)
         {
-            Instantiate(wallPrefab, new Vector2(sizeToGenerate.x - 1, j), Quaternion.identity);
+            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(sizeToGenerate.x - 1, j), Quaternion.identity);
         }
     }
     private void GenerateDoor()
@@ -81,6 +80,34 @@ public class RoomGenerator : TileBehaviour
             doorSpawnPosition.x = Mathf.Max(doorSpawnPosition.x, 1);
 
         }
-        Instantiate(doorPrefab, (Vector2)doorSpawnPosition, Quaternion.identity);
+        exit = Instantiate(GameManager.Singleton.doorPrefab, (Vector2)doorSpawnPosition, Quaternion.identity).GetComponent<TileBehaviour>();
+    }
+    private void GenerateFire(int amount)
+    {
+        //try get all the tiles that the fire can start on
+        List<Tile> possibleFireTiles = new List<Tile>();
+        foreach (Tile tile in Tile.ActiveTiles.Values)
+        {
+            if (Vector2.Distance(tile.position, exit.position) < 4f)
+            {
+                continue;
+            }
+            if (Fire.CanSpread(tile.positionInt))
+            {
+                possibleFireTiles.Add(tile);
+            }
+        }
+        //
+        for (int i = 0; i < amount; i++)
+        {
+            if (possibleFireTiles.Count == 0)
+            {
+                break;
+            }
+            Tile newTileOnFire = possibleFireTiles[Random.Range(0, possibleFireTiles.Count)];
+            //use forcespread since we know that we know it is a valid tile
+            Fire.ForceSpread(newTileOnFire.positionInt);
+            possibleFireTiles.Remove(newTileOnFire);
+        }
     }
 }

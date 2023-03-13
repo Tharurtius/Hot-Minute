@@ -33,22 +33,19 @@ public class RoomGenerator : TileBehaviour
     [Header("Prefabs")]
     [SerializeField] public GameObject wallPrefab;
     [SerializeField] public GameObject floorPrefab;
+    [SerializeField] public GameObject doorPrefab;
     //[Header("")]
     private void Start()
     {
         roomSize = new Vector2Int(Random.Range(minRoomSize.x, maxRoomSize.x), Random.Range(minRoomSize.y, maxRoomSize.y));
-        Generate(roomSize + Vector2Int.one);
-    }
-    private void OnEnable()
-    {
-        base.OnEnable();
-        position = Vector2.zero;
+        GenerateWallsAndFloors(roomSize + Vector2Int.one * 2);
+        GenerateDoor();
     }
     private void OnValidate()
     {
         Singleton = this;
     }
-    private void Generate(Vector2Int sizeToGenerate)
+    private void GenerateWallsAndFloors(Vector2Int sizeToGenerate)
     {
         for (int j = 0; j < sizeToGenerate.y; j++)
         {
@@ -62,11 +59,28 @@ public class RoomGenerator : TileBehaviour
                 Instantiate(floorPrefab, new Vector2(i, j), Quaternion.identity);
             }
             Instantiate(wallPrefab, new Vector2(i, sizeToGenerate.y - 1), Quaternion.identity);
-            
+
         }
         for (int j = 0; j < sizeToGenerate.y; j++)
         {
             Instantiate(wallPrefab, new Vector2(sizeToGenerate.x - 1, j), Quaternion.identity);
         }
+    }
+    private void GenerateDoor()
+    {
+        Vector2Int doorSpawnPosition = new Vector2Int(Random.Range(0, 2), Random.Range(0, 2));
+        doorSpawnPosition *= roomSize;
+        if (Random.Range(0f, 1f) >= 0.5f)
+        {
+            doorSpawnPosition.x = Random.Range(1, roomSize.x + 1);
+            doorSpawnPosition.y = Mathf.Max(doorSpawnPosition.y, 1);
+        }
+        else
+        {
+            doorSpawnPosition.y = Random.Range(1, roomSize.y + 1);
+            doorSpawnPosition.x = Mathf.Max(doorSpawnPosition.x, 1);
+
+        }
+        Instantiate(doorPrefab, (Vector2)doorSpawnPosition, Quaternion.identity);
     }
 }

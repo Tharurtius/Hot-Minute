@@ -14,6 +14,12 @@ public class TileBehaviour : MonoBehaviour
         Tile.ActiveTiles[tilePosition].attachedObjects.Add(this);
         transform.position = position;
     }
+    private Tile _tile;
+    public Tile tile
+    {
+        get { return _tile; }
+        set { SetPosition(value.positionInt); }
+    }
     private Vector2Int tilePosition = Vector2Int.zero;
     public Vector2 position
     {
@@ -40,6 +46,7 @@ public class TileBehaviour : MonoBehaviour
             Tile.ActiveTiles.Add(tilePosition, new Tile(tilePosition));
         }
         Tile.ActiveTiles[tilePosition].attachedObjects.Add(this);
+        _tile = Tile.ActiveTiles[tilePosition];
     }
     private void OnDestroy()
     {
@@ -51,20 +58,24 @@ public class TileBehaviour : MonoBehaviour
 public class Tile
 {
     public static Dictionary<Vector2Int, Tile> ActiveTiles = new Dictionary<Vector2Int, Tile>();
-    public Vector2Int position = Vector2Int.zero;
+    public Vector2Int positionInt = Vector2Int.zero;
+    public Vector2 position = Vector2Int.zero;
     public List<TileBehaviour> attachedObjects = new List<TileBehaviour>();
     #region Constructors
     public Tile(int x, int y)
     {
-        position = new Vector2Int(x, y);
+        positionInt = new Vector2Int(x, y);
+        position = positionInt;
     }
     public Tile(float x, float y)
     {
-        position = new Vector2Int((int)x, (int)y);
+        positionInt = new Vector2Int((int)x, (int)y);
+        position = positionInt;
     }
     public Tile(Vector2Int vector2Int)
     {
-        position = vector2Int;
+        positionInt = vector2Int;
+        position = positionInt;
     }
     #endregion
 }

@@ -169,9 +169,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minRoomSize: {x: 5, y: 5}
   maxRoomSize: {x: 10, y: 10}
-  roomSize: {x: 0, y: 0}
   wallPrefab: {fileID: 3315925084981595314, guid: 7276de1071b75f244a0a9da1463f32d9, type: 3}
   floorPrefab: {fileID: 5503966028683465410, guid: 09efaa2b2e684cb48a18a5af40688bfc, type: 3}
+  doorPrefab: {fileID: 5503966028683465410, guid: df26e43ea3c6b7943b3747d2aa3582bf, type: 3}
 --- !u!1 &1498235315
 GameObject:
   m_ObjectHideFlags: 0

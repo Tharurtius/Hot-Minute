@@ -10,15 +10,9 @@ public class Furniture : TileBehaviour
     public void CheckTile()
     {
         //if fire on the tile
-        if (Tile.ActiveTiles[tilePosition].attachedObjects.OfType<Fire>().Any())
+        if (Tile.ActiveTiles[positionInt].attachedObjects.OfType<Fire>().Any())
         {
-            Delete();
+            Destroy(gameObject);
         }
-    }
-
-    public void Delete()
-    {
-        Tile.ActiveTiles[tilePosition].attachedObjects.Remove(this);
-        Destroy(gameObject);
     }
 }

@@ -41,6 +41,10 @@ public class TileBehaviour : MonoBehaviour
         }
         Tile.ActiveTiles[tilePosition].attachedObjects.Add(this);
     }
+    private void OnDestroy()
+    {
+        Tile.ActiveTiles[positionInt].attachedObjects.Remove(this);
+    }
 }
 //Tile class to hold info of each tile in the scene
 //This is done since multiple scripts can be attached to the same tile/position

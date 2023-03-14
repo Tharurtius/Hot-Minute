@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecada13c415443f489b8ef864d0cb207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedRatio: 0.775
 --- !u!61 &280664605835732621
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -123,7 +124,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.8}
+  m_Size: {x: 0.4, y: 0.4}
   m_EdgeRadius: 0
 --- !u!50 &-8781647473310382042
 Rigidbody2D:

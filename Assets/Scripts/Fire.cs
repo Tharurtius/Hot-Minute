@@ -6,8 +6,9 @@ using UnityEngine;
 public class Fire : TileBehaviour
 {
     private Vector2Int[] fourDirections = new Vector2Int[4] {Vector2Int.up, Vector2Int.down , Vector2Int.left , Vector2Int.right };//set up in the editor (Tim: DO NOT)
-    Vector2 minMaxTime = new Vector2(3f, 5f);
-    float timer;
+    private Vector2 minMaxTime = new Vector2(3f, 5f);
+    private float timer;
+    [SerializeField] [Range(0, 1)] private float speedRatio = 0.5f;
     private void Start()
     {
         ResetTimer();
@@ -29,7 +30,7 @@ public class Fire : TileBehaviour
         }
         if (collision.gameObject.GetComponent<Player>())
         {
-            PlayerMovement.Singleton.moveSpeed = PlayerMovement.Singleton.maxMoveSpeed * 0.5f;
+            PlayerMovement.Singleton.moveSpeed = PlayerMovement.Singleton.maxMoveSpeed * speedRatio;
         }
         if (collision.gameObject.TryGetComponent(out IDamage damagableObject))
         {
@@ -40,7 +41,7 @@ public class Fire : TileBehaviour
     {
         if (collision.gameObject.GetComponent<Player>())
         {
-            PlayerMovement.Singleton.moveSpeed = PlayerMovement.Singleton.maxMoveSpeed * 0.5f;
+            PlayerMovement.Singleton.moveSpeed = PlayerMovement.Singleton.maxMoveSpeed * speedRatio;
         }
         if (collision.gameObject.TryGetComponent(out IDamage damagableObject))
         {

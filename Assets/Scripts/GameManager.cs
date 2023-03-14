@@ -51,7 +51,6 @@ public interface IDamage
     int health { get; set; }
     float lastTimeDamaged { get; set; }
     float damageCoolDown { get; set; }
-    float regenerationCoolDown { get; set; }
     void TakeDamage()
     {
         if (lastTimeDamaged + damageCoolDown > Time.time)
@@ -60,5 +59,11 @@ public interface IDamage
         }
         health--;
         lastTimeDamaged = Time.time;
+        if (health <= 0 && this is MonoBehaviour)
+        {
+            GameObject.Destroy(((MonoBehaviour)this).gameObject);
+        }
+        OnDamageTaken();
     }
+    void OnDamageTaken() { }
 }

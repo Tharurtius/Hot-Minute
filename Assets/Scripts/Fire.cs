@@ -6,7 +6,6 @@ using UnityEngine;
 public class Fire : TileBehaviour
 {
     private Vector2Int[] fourDirections = new Vector2Int[4] {Vector2Int.up, Vector2Int.down , Vector2Int.left , Vector2Int.right };//set up in the editor (Tim: DO NOT)
-
     Vector2 minMaxTime = new Vector2(3f, 5f);
     float timer;
     private void Start()
@@ -21,6 +20,36 @@ public class Fire : TileBehaviour
             Spread();
             ResetTimer();
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent(out IDamage damage))
+        {
+            damage.TakeDamage();
+        }
+        if (collision.gameObject.GetComponent<Player>())
+        {
+            PlayerMovement.Singleton.moveSpeed = PlayerMovement.Singleton.maxMoveSpeed * 0.5f;
+        }
+        if (collision.gameObject.TryGetComponent(out IDamage damagableObject))
+        {
+            damagableObject.TakeDamage();
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Player>())
+        {
+            PlayerMovement.Singleton.moveSpeed = PlayerMovement.Singleton.maxMoveSpeed * 0.5f;
+        }
+        if (collision.gameObject.TryGetComponent(out IDamage damagableObject))
+        {
+            damagableObject.TakeDamage();
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        PlayerMovement.Singleton.moveSpeed = PlayerMovement.Singleton.maxMoveSpeed;
     }
     private void ResetTimer()
     {

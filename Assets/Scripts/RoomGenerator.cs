@@ -46,23 +46,25 @@ public class RoomGenerator : TileBehaviour
     }
     private void GenerateWallsAndFloors(Vector2Int sizeToGenerate)
     {
+        Transform wallParent = new GameObject().transform;
+        wallParent.gameObject.AddComponent<CompositeCollider2D>();
         for (int j = 0; j < sizeToGenerate.y; j++)
         {
-            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(0, j), Quaternion.identity);
+            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(0, j), Quaternion.identity).transform.parent = wallParent;
         }
         for (int i = 1; i < sizeToGenerate.x - 1; i++)
         {
-            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(i, 0), Quaternion.identity);
+            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(i, 0), Quaternion.identity).transform.parent = wallParent;
             for (int j = 1; j < sizeToGenerate.y - 1; j++)
             {
                 Instantiate(GameManager.Singleton.floorPrefab, new Vector2(i, j), Quaternion.identity);
             }
-            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(i, sizeToGenerate.y - 1), Quaternion.identity);
+            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(i, sizeToGenerate.y - 1), Quaternion.identity).transform.parent = wallParent;
 
         }
         for (int j = 0; j < sizeToGenerate.y; j++)
         {
-            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(sizeToGenerate.x - 1, j), Quaternion.identity);
+            Instantiate(GameManager.Singleton.wallPrefab, new Vector2(sizeToGenerate.x - 1, j), Quaternion.identity).transform.parent = wallParent;
         }
     }
     private void GenerateDoor()
@@ -81,6 +83,7 @@ public class RoomGenerator : TileBehaviour
 
         }
         exit = Instantiate(GameManager.Singleton.doorPrefab, (Vector2)doorSpawnPosition, Quaternion.identity).GetComponent<TileBehaviour>();
+        Instantiate(GameManager.Singleton.playerPrefab, (Vector2)doorSpawnPosition, Quaternion.identity);
     }
     private void GenerateFire(int amount)
     {

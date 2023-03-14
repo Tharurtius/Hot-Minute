@@ -33,10 +33,32 @@ public class GameManager : MonoBehaviour
     public GameObject floorPrefab;
     public GameObject doorPrefab;
     public GameObject firePrefab;
+    public GameObject playerPrefab;
     [Header("Game Settings")]
     public int initialFireCount = 3;
+    public Camera mainCamera;
     private void OnEnable()
     {
         Singleton = this;
+    }
+    private void Start()
+    {
+        mainCamera = Camera.main;
+    }
+}
+public interface IDamage
+{
+    int health { get; set; }
+    float lastTimeDamaged { get; set; }
+    float damageCoolDown { get; set; }
+    float regenerationCoolDown { get; set; }
+    void TakeDamage()
+    {
+        if (lastTimeDamaged + damageCoolDown > Time.time)
+        {
+            return;
+        }
+        health--;
+        lastTimeDamaged = Time.time;
     }
 }

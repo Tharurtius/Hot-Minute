@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamage, IFlash
 {
-    [SerializeField] private int health;
     private float lastTimeDamaged;
     [SerializeField] private float damageCoolDown;
     [SerializeField] private Color _damageColour = Color.white;
 
     public Color damageColour { get => _damageColour; set => _damageColour = value; }
     #region IDamage variables
-    int IDamage.health { get => health; set => health = value; }
+    int IDamage.health { get => GameStats.playerHealth; set => GameStats.playerHealth = value; }
     float IDamage.lastTimeDamaged { get => lastTimeDamaged; set => lastTimeDamaged = value; }
     float IDamage.damageCoolDown { get => damageCoolDown; set => damageCoolDown = value; }
     #endregion

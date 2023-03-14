@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public GameObject doorPrefab;
     public GameObject firePrefab;
     public GameObject playerPrefab;
+    public GameObject civillianPrefab;
     //[Header("Game Settings")]
 
     [Header("Game Start Settings")]

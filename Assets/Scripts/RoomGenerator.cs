@@ -109,8 +109,69 @@ public class RoomGenerator : TileBehaviour
             }
             Tile newTileOnFire = possibleFireTiles[Random.Range(0, possibleFireTiles.Count)];
             //use forcespread since we know that we know it is a valid tile
-            Fire.ForceSpread(newTileOnFire.positionInt);
+            Fire newFire = Fire.ForceSpread(newTileOnFire.positionInt);
             possibleFireTiles.Remove(newTileOnFire);
+            for (int j = 0; j < Random.Range(0, 4); j++)
+            {
+                for (int x = 0; x < 4; x++)
+                {
+                    if (newFire.Spread(out Vector2 vector2))
+                    {
+                        if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(vector2), out Tile tile))
+                        {
+                            possibleFireTiles.Remove(tile);
+                        }
+                        break;
+                    }
+                }
+            }
         }
+    }
+    private void GenerateCivillians()
+    {
+        List<Tile> possibleCivillianTiles = new List<Tile>();
+        foreach (Tile tile in Tile.ActiveTiles.Values)
+        {
+            if (!CivillianCanSpawn(tile))
+            {
+                continue;
+            }
+            possibleCivillianTiles.Add(tile);
+        }
+        float longestDistance = 0;
+        Tile furthestTile;
+        if (possibleCivillianTiles.Count <= 0)
+        {
+            furthestTile = possibleCivillianTiles[0];
+        }
+        else
+        {
+            return;
+        }
+        foreach (Tile tile in possibleCivillianTiles)
+        {
+            if (Vector2.Distance(tile.position, exit.position) > longestDistance)
+            {
+                furthestTile = tile;
+                longestDistance = Vector2.Distance(tile.position, exit.position);
+            }
+        }
+        Instantiate(GameManager.Singleton.civillianPrefab, furthestTile.position, Quaternion.identity).GetComponent<Fire>();
+    }
+    private bool CivillianCanSpawn(Tile tile)
+    {
+        if (tile.attachedObjects.OfType<Wall>().Any())
+        {
+            return false;
+        }
+        if (tile.attachedObjects.OfType<Fire>().Any())
+        {
+            return false;
+        }
+        if (Vector2.Distance(tile.position, exit.position) < 4)
+        {
+            return false;
+        }
+        return true;
     }
 }

@@ -12,6 +12,7 @@ public class Fire : TileBehaviour
     private void Start()
     {
         ResetTimer();
+        timer += 3f;
     }
     private void Update()
     {
@@ -56,15 +57,29 @@ public class Fire : TileBehaviour
     {
         timer = Random.Range(minMaxTime.x, minMaxTime.y);
     }
-    public void Spread()
+    public bool Spread()
     {
         foreach (Vector2Int direction in fourDirections)
         {
             if (TrySpread(positionInt + direction))
             {
-                return;
+                return true;
             }
         }
+        return false;
+    }
+    public bool Spread(out Vector2 positionOfNewTile)
+    {
+        foreach (Vector2Int direction in fourDirections)
+        {
+            if (TrySpread(positionInt + direction))
+            {
+                positionOfNewTile = positionInt;
+                return true;
+            }
+        }
+        positionOfNewTile = Vector2.zero;
+        return false;
     }
     public static bool TrySpread(Vector2Int position)
     {
@@ -81,9 +96,9 @@ public class Fire : TileBehaviour
         Instantiate(GameManager.Singleton.firePrefab, (Vector2)position, Quaternion.identity);
         return true;
     }
-    public static void ForceSpread(Vector2Int position)
+    public static Fire ForceSpread(Vector2Int position)
     {
-        Instantiate(GameManager.Singleton.firePrefab, (Vector2)position, Quaternion.identity);
+        return Instantiate(GameManager.Singleton.firePrefab, (Vector2)position, Quaternion.identity).GetComponent<Fire>();
     }
     public static bool CanSpread(Vector2Int position)
     {

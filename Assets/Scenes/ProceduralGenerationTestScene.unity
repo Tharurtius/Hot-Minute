@@ -186,6 +186,7 @@ MonoBehaviour:
   floorPrefab: {fileID: 5503966028683465410, guid: 09efaa2b2e684cb48a18a5af40688bfc, type: 3}
   doorPrefab: {fileID: 5503966028683465410, guid: df26e43ea3c6b7943b3747d2aa3582bf, type: 3}
   firePrefab: {fileID: 7675013724278776114, guid: 2d6c9984c9fe5a344bc2f9061c7c7629, type: 3}
+  initialFireCount: 3
 --- !u!1 &1498235315
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,35 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IDamage
+public class Player : MonoBehaviour, IDamage, IFlash
 {
     [SerializeField] private int health;
     private float lastTimeDamaged;
     [SerializeField] private float damageCoolDown;
-    private Color originalColour;
-    private SpriteRenderer spriteRenderer;
+    [SerializeField] private Color _damageColour = Color.white;
+
+    public Color damageColour { get => _damageColour; set => _damageColour = value; }
     #region IDamage variables
     int IDamage.health { get => health; set => health = value; }
     float IDamage.lastTimeDamaged { get => lastTimeDamaged; set => lastTimeDamaged = value; }
     float IDamage.damageCoolDown { get => damageCoolDown; set => damageCoolDown = value; }
     #endregion
-    private void Start()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        originalColour = spriteRenderer.color;
-    }
     void IDamage.OnDamageTaken()
     {
-        StartCoroutine(Flash());
-    }
-    private IEnumerator Flash()
-    {
-        spriteRenderer.color = Color.white;
-        for (int i = 0; i < 10; i++)
+        if (TryGetComponent(out SpriteRenderer spriteRenderer))
         {
-            yield return new WaitForFixedUpdate();
-            spriteRenderer.color = Color.Lerp(Color.white, originalColour, i / 12f);
+            ((IFlash)this).Flash(spriteRenderer);
         }
-        spriteRenderer.color = originalColour;
     }
 }

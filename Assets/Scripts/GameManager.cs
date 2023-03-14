@@ -67,3 +67,25 @@ public interface IDamage
     }
     void OnDamageTaken() { }
 }
+public interface IFlash
+{
+    Color damageColour { get; set; }
+    void Flash(SpriteRenderer spriteRenderer)
+    {
+        if (this is MonoBehaviour)
+        {
+            ((MonoBehaviour)this).StartCoroutine(FlashCorutine(spriteRenderer));
+        }
+    }
+    private IEnumerator FlashCorutine(SpriteRenderer spriteRenderer)
+    {
+        Color originalColour = spriteRenderer.color;
+        spriteRenderer.color = damageColour;
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForFixedUpdate();
+            spriteRenderer.color = Color.Lerp(damageColour, originalColour, i / 12f);
+        }
+        spriteRenderer.color = originalColour;
+    }
+}

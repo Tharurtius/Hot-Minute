@@ -39,6 +39,7 @@ public class RoomGenerator : TileBehaviour
         GenerateWallsAndFloors(roomSize + Vector2Int.one * 2);
         GenerateDoor();
         GenerateFire(GameManager.Singleton.initialFireCount);
+        GenerateCivillians(GameManager.Singleton.initialCivillianCount);
     }
     private void OnValidate()
     {
@@ -111,6 +112,7 @@ public class RoomGenerator : TileBehaviour
             //use forcespread since we know that we know it is a valid tile
             Fire newFire = Fire.ForceSpread(newTileOnFire.positionInt);
             possibleFireTiles.Remove(newTileOnFire);
+            //bruh I didn't want to this much nesting oh god
             for (int j = 0; j < Random.Range(0, 4); j++)
             {
                 for (int x = 0; x < 4; x++)
@@ -127,7 +129,7 @@ public class RoomGenerator : TileBehaviour
             }
         }
     }
-    private void GenerateCivillians()
+    private void GenerateCivillians(int amount)
     {
         List<Tile> possibleCivillianTiles = new List<Tile>();
         foreach (Tile tile in Tile.ActiveTiles.Values)
@@ -138,25 +140,19 @@ public class RoomGenerator : TileBehaviour
             }
             possibleCivillianTiles.Add(tile);
         }
-        float longestDistance = 0;
-        Tile furthestTile;
         if (possibleCivillianTiles.Count <= 0)
-        {
-            furthestTile = possibleCivillianTiles[0];
-        }
-        else
         {
             return;
         }
-        foreach (Tile tile in possibleCivillianTiles)
+        possibleCivillianTiles.Sort((x, y) => Vector2.Distance(y.position, exit.position).CompareTo(Vector2.Distance(x.position, exit.position)));
+        if (possibleCivillianTiles.Count < amount)
         {
-            if (Vector2.Distance(tile.position, exit.position) > longestDistance)
-            {
-                furthestTile = tile;
-                longestDistance = Vector2.Distance(tile.position, exit.position);
-            }
+            amount = possibleCivillianTiles.Count;
         }
-        Instantiate(GameManager.Singleton.civillianPrefab, furthestTile.position, Quaternion.identity).GetComponent<Fire>();
+        for (int i = 0; i < amount; i++)
+        {
+            Instantiate(GameManager.Singleton.civillianPrefab, possibleCivillianTiles[i].position, Quaternion.identity).GetComponent<Fire>();
+        }
     }
     private bool CivillianCanSpawn(Tile tile)
     {
@@ -165,6 +161,10 @@ public class RoomGenerator : TileBehaviour
             return false;
         }
         if (tile.attachedObjects.OfType<Fire>().Any())
+        {
+            return false;
+        }
+        if (tile.attachedObjects.OfType<PersonTile>().Any())
         {
             return false;
         }

@@ -311,11 +311,13 @@ MonoBehaviour:
   doorPrefab: {fileID: 5503966028683465410, guid: df26e43ea3c6b7943b3747d2aa3582bf, type: 3}
   firePrefab: {fileID: 7675013724278776114, guid: 2d6c9984c9fe5a344bc2f9061c7c7629, type: 3}
   playerPrefab: {fileID: 7160340398618401913, guid: 66cb015713beb3c47a6628a81e89231e, type: 3}
+  civillianPrefab: {fileID: 7769343021131278071, guid: aabb1a9e6a85f6847b7cb57d2761c38a, type: 3}
   startingPlayerHealth: 3
   startingItem: {fileID: 0}
   startingCash: 0
   startingDifficulty: 0
   initialFireCount: 3
+  initialCivillianCount: 3
   mainCamera: {fileID: 0}
 --- !u!114 &197290322
 MonoBehaviour:
@@ -341,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44e4eb2367dd64e8a5c946ac230bc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 29c715548d160f8458fc4de580e53c9d, type: 2}
+  invSlot: {fileID: 0}
   itemImage: {fileID: 513341577}
   itemText: {fileID: 1040033658}
   foamPrefab: {fileID: 4810587957529776626, guid: df148f633eb38e04885d9f5f293bc5ea, type: 3}

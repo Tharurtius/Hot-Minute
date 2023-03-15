@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
     public int startingDifficulty = 0;
     [Header("Level Generation")]
     public int initialFireCount = 3;
+    public int initialCivillianCount = 3;
     public Camera mainCamera;
     private void OnValidate()
     {

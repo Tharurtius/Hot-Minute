@@ -312,7 +312,9 @@ MonoBehaviour:
   firePrefab: {fileID: 7675013724278776114, guid: 2d6c9984c9fe5a344bc2f9061c7c7629, type: 3}
   playerPrefab: {fileID: 7160340398618401913, guid: 66cb015713beb3c47a6628a81e89231e, type: 3}
   civillianPrefab: {fileID: 7769343021131278071, guid: aabb1a9e6a85f6847b7cb57d2761c38a, type: 3}
+  currentInventory: {fileID: 0}
   startingPlayerHealth: 3
+  startingDeaths: 5
   startingItem: {fileID: 0}
   startingCash: 0
   startingDifficulty: 0
@@ -343,10 +345,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44e4eb2367dd64e8a5c946ac230bc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invSlot: {fileID: 0}
+  invSlot: {fileID: 11400000, guid: 29c715548d160f8458fc4de580e53c9d, type: 2}
+  healthBar: {fileID: 202454859}
+  deathsBar: {fileID: 2034873565}
   itemImage: {fileID: 513341577}
   itemText: {fileID: 1040033658}
+  goldCounter: {fileID: 907594759}
+  scoreCounter: {fileID: 987266599}
   foamPrefab: {fileID: 4810587957529776626, guid: df148f633eb38e04885d9f5f293bc5ea, type: 3}
+  axeBlade: {fileID: 0}
+  blankSprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &200111281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,7 +1085,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 21d43e7114c758c49886cb9fc604dd66, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

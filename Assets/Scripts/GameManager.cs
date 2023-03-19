@@ -35,10 +35,12 @@ public class GameManager : MonoBehaviour
     public GameObject firePrefab;
     public GameObject playerPrefab;
     public GameObject civillianPrefab;
+    public Inventory currentInventory;
     //[Header("Game Settings")]
 
     [Header("Game Start Settings")]
     public int startingPlayerHealth = 3;
+    public int startingDeaths = 5;
     public Item startingItem;
     public float startingCash = 0f;
     public int startingDifficulty = 0;
@@ -46,6 +48,9 @@ public class GameManager : MonoBehaviour
     public int initialFireCount = 3;
     public int initialCivillianCount = 3;
     public Camera mainCamera;
+    
+
+    
     private void OnValidate()
     {
         
@@ -66,6 +71,7 @@ public class GameManager : MonoBehaviour
 public static class GameStats
 {
     public static int playerHealth = 3;
+    public static int deathsAllowed = 5;
     public static Item currentItem;
     public static float cash = 0f;
     public static int difficulty = 0;
@@ -76,12 +82,14 @@ public static class GameStats
         if (GameManager.Singleton)
         {
             playerHealth = GameManager.Singleton.startingPlayerHealth;
+            deathsAllowed = GameManager.Singleton.startingDeaths;
             currentItem = GameManager.Singleton.startingItem;
             cash = GameManager.Singleton.startingCash;
             difficulty = GameManager.Singleton.startingDifficulty;
             return;
         }
         playerHealth = 3;
+        deathsAllowed = 5;
         currentItem = null;
         cash = 0f;
         difficulty = 0;

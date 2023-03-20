@@ -312,15 +312,18 @@ MonoBehaviour:
   firePrefab: {fileID: 7675013724278776114, guid: 2d6c9984c9fe5a344bc2f9061c7c7629, type: 3}
   playerPrefab: {fileID: 7160340398618401913, guid: 66cb015713beb3c47a6628a81e89231e, type: 3}
   civillianPrefab: {fileID: 7769343021131278071, guid: aabb1a9e6a85f6847b7cb57d2761c38a, type: 3}
-  currentInventory: {fileID: 0}
+  fireExtinguisherPrefab: {fileID: 0}
+  fireAxePrefab: {fileID: 0}
   startingPlayerHealth: 3
-  startingDeaths: 5
   startingItem: {fileID: 0}
   startingCash: 0
+  startingScore: 0
   startingDifficulty: 0
+  startingDeathsAllowed: 5
   initialFireCount: 3
   initialCivillianCount: 3
-  mainCamera: {fileID: 0}
+  initialfireExtinguisherCount: 1
+  initialfireAxeCount: 1
 --- !u!114 &197290322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,7 +356,7 @@ MonoBehaviour:
   goldCounter: {fileID: 907594759}
   scoreCounter: {fileID: 987266599}
   foamPrefab: {fileID: 4810587957529776626, guid: df148f633eb38e04885d9f5f293bc5ea, type: 3}
-  axeBlade: {fileID: 0}
+  axeBlade: {fileID: 3388019376734017503, guid: dd951c683d04e844a9ce2310b18f23cb, type: 3}
   blankSprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &200111281
 GameObject:

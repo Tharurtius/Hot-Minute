@@ -34,4 +34,12 @@ public class Furniture : TileBehaviour, IDamage
         }
         health--;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Axe"))
+        {
+            health -= 2;
+        }
+    }
 }

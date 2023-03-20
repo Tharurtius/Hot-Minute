@@ -81,7 +81,7 @@ public class Fire : TileBehaviour
         {
             if (TrySpread(positionInt + direction))
             {
-                positionOfNewTile = positionInt;
+                positionOfNewTile = positionInt + direction;
                 return true;
             }
         }

@@ -8,7 +8,7 @@ public class Foam : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _rb.velocity = gameObject.transform.up * 10f;
+        _rb.velocity = gameObject.transform.right * 10f;
     }
 
     // Update is called once per frame

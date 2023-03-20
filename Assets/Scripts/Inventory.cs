@@ -127,7 +127,7 @@ public class Inventory : MonoBehaviour
         {
             //spray foam
             GameObject foam;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5 + GameManager.bonusFoam; i++)
             {
                 foam = Instantiate(foamPrefab, player.position + player.right, player.rotation);
                 Destroy(foam, 1f);

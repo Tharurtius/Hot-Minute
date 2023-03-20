@@ -47,6 +47,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int startingScore = 0;
     [SerializeField] private int startingDifficulty = 0;
     [SerializeField] private int startingDeathsAllowed = 5;
+    [SerializeField] private int startingFoam = 0;
+    [SerializeField] private float startingSpeed = 1f;
+    [SerializeField] private float startingCooldown = 1f;
+    [SerializeField] private float startingCost = 1f;
     [Header("Level Generation")]
     public int initialFireCount = 3;
     public int initialFurnitureCount = 3;
@@ -61,6 +65,11 @@ public class GameManager : MonoBehaviour
     public static int difficulty = 0;
     public static bool playerIsAlive = false;
     public static int deathsAllowed = 5;
+    public static int bonusFoam = 0;
+    public static float bonusSpeed = 1f;
+    public static float cooldownReduction = 1f;
+    public static float cost = 1f;
+
     //scene references
     [System.NonSerialized] public Camera mainCamera;
     [System.NonSerialized] public Inventory currentInventory;
@@ -107,6 +116,10 @@ public class GameManager : MonoBehaviour
             difficulty = Singleton.startingDifficulty;
             score = Singleton.startingScore;
             deathsAllowed = Singleton.startingDeathsAllowed;
+            bonusFoam = Singleton.startingFoam;
+            bonusSpeed = Singleton.startingSpeed;
+            cooldownReduction = Singleton.startingCooldown;
+            cost = Singleton.startingCost;
             return;
         }
         playerHealth = 3;
@@ -114,6 +127,10 @@ public class GameManager : MonoBehaviour
         score = 0;
         difficulty = 0;
         deathsAllowed = 5;
+        bonusFoam = 0;
+        bonusSpeed = 1f;
+        cooldownReduction = 1f;
+        cost = 1f;
     }
     /// <summary>
     /// Runs various stuff for the end of level
@@ -162,5 +179,23 @@ public class GameManager : MonoBehaviour
         currentInventory.pausePanel.SetActive(true);
         currentInventory.resumeButton.SetActive(false);
         currentInventory.pauseTitle.text = "You can no longer work";
+    }
+    //for use by a referencer
+    public void UpgradeFoam()
+    {
+        bonusFoam++;
+        cost++;
+    }
+
+    public void UpgradeSpeed()
+    {
+        bonusSpeed += 0.1f;
+        cost++;
+    }
+
+    public void UpgradeCooldown()
+    {
+        cooldownReduction *= 0.95f;
+        cost++;
     }
 }

@@ -39,11 +39,13 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         Singleton = this;
+        maxMoveSpeed *= GameManager.bonusSpeed;
     }
     private void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         moveSpeed = maxMoveSpeed;
+        cooldownMax *= GameManager.cooldownReduction;
     }
     private void FixedUpdate()
     {

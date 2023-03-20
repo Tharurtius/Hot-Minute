@@ -76,9 +76,61 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void UseItem()
+    public void UseItem(Transform player)
     {
         //depends on the item
+        if (invSlot.itemID == "fireaxe")
+        {
+            //swing axe
+            GameObject blade = Instantiate(axeBlade, player.position + player.forward * 0.5f, player.rotation);
+            Destroy(blade, 0.5f);
+        }
+        else if (invSlot.itemID == "extinguisher")
+        {
+            //spray foam
+            GameObject foam;
+            for (int i = 0; i < 5; i++)
+            {
+                foam = Instantiate(foamPrefab, player.position, player.rotation);
+                Destroy(foam, 1f);
+            }
+            //destroy extinguisher
+            invSlot = null;
+            SetupUI();
+        }
+        else if (invSlot.itemID == "gold")
+        {
+            //get tile
+            if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(PlayerMovement.Singleton.transform.position), out Tile tile))
+            {
+                //if at exit
+                TileBehaviour exit = tile.attachedObjects.Where(obj => obj.name == "Exit").SingleOrDefault();
+                if (exit != null)
+                {
+                    //increase cash
+                    GameStats.cash += invSlot.itemValue;
+
+                    invSlot = null;
+                    SetupUI();
+                }
+            }
+        }
+        else if (invSlot.itemID == "person")
+        {
+            //get tile
+            if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(PlayerMovement.Singleton.transform.position), out Tile tile))
+            {
+                //if at exit
+                TileBehaviour exit = tile.attachedObjects.Where(obj => obj.name == "Exit").SingleOrDefault();
+                if (exit != null)
+                {
+                    invSlot = null;
+                    SetupUI();
+
+                    //gamemanager raise score and lower number of people in scene
+                }
+            }
+        }
     }
     /// <summary>
     /// Sets up ui to new item

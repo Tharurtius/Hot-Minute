@@ -37,6 +37,13 @@ public class Fire : TileBehaviour
         {
             damagableObject.TakeDamage();
         }
+
+        //if fire gets hit by foam
+        if (collision.gameObject.CompareTag("Foam"))
+        {
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {

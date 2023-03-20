@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3388019376734017473}
   - component: {fileID: 3388019376734017502}
   - component: {fileID: 3388019376734017475}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Axe swing
   m_TagString: Axe
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3388019376734017503}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

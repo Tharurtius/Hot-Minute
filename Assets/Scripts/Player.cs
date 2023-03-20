@@ -28,5 +28,6 @@ public class Player : MonoBehaviour, IDamage, IFlash
         {
             ((IFlash)this).Flash(spriteRenderer);
         }
+        GameManager.Singleton.currentInventory.LowerHealth();
     }
 }

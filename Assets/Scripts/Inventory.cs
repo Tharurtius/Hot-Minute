@@ -16,6 +16,10 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Text itemText;
     [SerializeField] private Text goldCounter;
     [SerializeField] private Text scoreCounter;
+    public GameObject nextButton;
+    public GameObject resumeButton;
+    public GameObject pausePanel;
+    public Text pauseTitle;
     [Header("Prefabs")]
     [SerializeField] private GameObject foamPrefab;
     [SerializeField] private GameObject axeBlade;
@@ -26,6 +30,16 @@ public class Inventory : MonoBehaviour
     {
         //reference itself to the gamemanager
         GameManager.Singleton.currentInventory = this;
+
+        //if death counter is lower than 5
+        if (GameManager.deathsAllowed < 5)
+        {
+            for (int i = 0; i < 5 - GameManager.deathsAllowed; i++)
+            {
+                LowerCount();
+            }
+        }
+        SetupUI();
     }
 
     public void GetItem()
@@ -80,14 +94,19 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Uses the item
     /// </summary>
-    /// <param name="player"></param>
-    /// <returns></returns>
+    /// <param name="player">The transform of the player</param>
+    /// <returns>If item was used or not</returns>
     public bool UseItem(Transform player)
     {
-        //depends on the item
-        if (invSlot.itemID == "fireaxe")
+        //check if slot is empty or player is dead
+        if (invSlot == null || PlayerMovement.Singleton == null)
+        {
+            return false;
+        }
+        //else depends on the item
+        else if (invSlot.itemID == "fireaxe")
         {
             //swing axe
             GameObject blade = Instantiate(axeBlade, player.position + player.right, player.rotation);
@@ -134,13 +153,11 @@ public class Inventory : MonoBehaviour
                 //if at exit
                 if (AtExit())
                 {
-                    invSlot = null;
-                    PersonTile.CurrentPeopleCount--;
-                    SetupUI();
-
                     //gamemanager raise score and lower number of people in scene
                     GameManager.score++;
-                    scoreCounter.text = GameManager.score.ToString();
+                    invSlot = null;
+                    PersonTile.CurrentPeopleCount--;
+                    SetupUI();  
                 }
             }
             return true;
@@ -152,7 +169,7 @@ public class Inventory : MonoBehaviour
         }
     }
     /// <summary>
-    /// Sets up ui to new item
+    /// Sets up UI
     /// </summary>
     public void SetupUI()
     {
@@ -167,8 +184,10 @@ public class Inventory : MonoBehaviour
             itemImage.sprite = invSlot.itemImage;
             itemText.text = invSlot.itemName;
         }
+        goldCounter.text = "Gold: " + GameManager.cash;
+        scoreCounter.text = "Score: " + GameManager.score;
     }
-    
+
     public bool AtExit()
     {
         //get tile
@@ -183,5 +202,27 @@ public class Inventory : MonoBehaviour
             }
         }
         return false;
+    }
+    /// <summary>
+    /// Lowers health in the UI
+    /// </summary>
+    public void LowerHealth()
+    {
+        //should always be true
+        if (healthBar.transform.childCount > 0)
+        {
+            Destroy(healthBar.transform.GetChild(0).gameObject);
+        }
+    }
+    /// <summary>
+    /// Lower death counter
+    /// </summary>
+    public void LowerCount()
+    {
+        //should always be true
+        if (deathsBar.transform.childCount > 0)
+        {
+            Destroy(deathsBar.transform.GetChild(0).gameObject);
+        }
     }
 }

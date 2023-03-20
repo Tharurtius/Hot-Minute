@@ -76,6 +76,22 @@ public class GameManager : MonoBehaviour
         }
         mainCamera = Camera.main;
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Pause();
+        }
+        if (deathsAllowed <= 0 || playerHealth <= 0)
+        {
+            EndGame();
+        }
+        if (PersonTile.CurrentPeopleCount <= 0)
+        {
+            LevelWon();
+        }
+    }
     /// <summary>
     /// Resets the game stats to default values
     /// If a singleton of the game manager exists in the current scene, it sets the values to the starting values of the instance
@@ -97,5 +113,53 @@ public class GameManager : MonoBehaviour
         score = 0;
         difficulty = 0;
         deathsAllowed = 5;
+    }
+    /// <summary>
+    /// Runs various stuff for the end of level
+    /// </summary>
+    public void NextLevel()
+    {
+        //regenerate player health
+        playerHealth = 3;
+        //add 1 more death allowed if less than 5
+        if (deathsAllowed < 5)
+        {
+            deathsAllowed++;
+        }
+        //restart time
+        Time.timeScale = 1f;
+    }
+    /// <summary>
+    /// When you win the level, brings up UI
+    /// </summary>
+    public void LevelWon()
+    {
+        currentInventory.pausePanel.SetActive(true);
+        currentInventory.resumeButton.SetActive(false);
+        currentInventory.nextButton.SetActive(true);
+        currentInventory.pauseTitle.text = "No more survivors in the building";
+        //pause time so player doesnt die in background
+        Time.timeScale = 0f;
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0f;
+
+        currentInventory.pausePanel.SetActive(true);
+    }
+
+    public void Unpause()
+    {
+        Time.timeScale = 1f;
+
+        currentInventory.pausePanel.SetActive(false);
+    }
+
+    public void EndGame()
+    {
+        currentInventory.pausePanel.SetActive(true);
+        currentInventory.resumeButton.SetActive(false);
+        currentInventory.pauseTitle.text = "You can no longer work";
     }
 }

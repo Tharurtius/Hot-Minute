@@ -29,6 +29,7 @@ public class PersonTile : ItemTile, IDamage, IFlash
             //also lower score here
             Destroy(gameObject);
             currentPeopleCount--;
+            GameManager.Singleton.currentInventory.LowerCount();
         }
     }
     private void Start()

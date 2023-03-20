@@ -194,7 +194,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Next Level
+  m_Text: Upgrades
 --- !u!222 &59496994
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 129200583}
   - component: {fileID: 129200582}
   m_Layer: 5
-  m_Name: Next Level
+  m_Name: Upgrade Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,21 +555,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 197290321}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: NextLevel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 197290322}
-        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
-        m_MethodName: ReloadScene
+      - m_Target: {fileID: 197290324}
+        m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
+        m_MethodName: UpgradeScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -688,6 +676,7 @@ MonoBehaviour:
   fireExtinguisherPrefab: {fileID: 4380169087634757688, guid: c2cd8c69acd680e4a8b1b52473c8c4a8, type: 3}
   fireAxePrefab: {fileID: 675100079568120422, guid: 3b44584ac5a88124b9d9b2bf7478e188, type: 3}
   furniturePrefab: {fileID: 671335063939442079, guid: fc8c8140c55669547ab34b1e941d501f, type: 3}
+  goldPrefab: {fileID: 2327831854220041537, guid: 8a524a05a8663544fa9da67ba27ed84b, type: 3}
   startingPlayerHealth: 3
   startingCash: 0
   startingScore: 0
@@ -700,6 +689,7 @@ MonoBehaviour:
   initialFireCount: 3
   initialFurnitureCount: 2
   initialCivillianCount: 3
+  initialGoldCount: 3
   initialfireExtinguisherCount: 1
   initialfireAxeCount: 0
 --- !u!114 &197290322
@@ -740,6 +730,7 @@ MonoBehaviour:
   foamPrefab: {fileID: 4810587957529776626, guid: df148f633eb38e04885d9f5f293bc5ea, type: 3}
   axeBlade: {fileID: 3388019376734017503, guid: dd951c683d04e844a9ce2310b18f23cb, type: 3}
   blankSprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  selectedObjectPrefab: {fileID: 0}
 --- !u!114 &197290324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -752,6 +743,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 395923e854c3f044d80e4e2ae5358e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: {fileID: 94492023}
+  foam: {fileID: 209564257}
+  cooldown: {fileID: 1818492041}
+  cost: {fileID: 2126380141}
+  gold: {fileID: 1966900678}
+  pausePanel: {fileID: 0}
+  upgradePanel: {fileID: 0}
 --- !u!1 &200111281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2039,7 +2037,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &805156749
 RectTransform:
   m_ObjectHideFlags: 0

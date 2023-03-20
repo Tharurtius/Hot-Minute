@@ -43,6 +43,7 @@ public class RoomGenerator : TileBehaviour
         GenerateFire(GameManager.Singleton.initialFireCount);
         GenerateFurniture(GameManager.Singleton.initialFurnitureCount);
         GenerateCivillians(GameManager.Singleton.initialCivillianCount);
+        GenerateGold(Random.Range(0, GameManager.Singleton.initialGoldCount + 1));
         GenerateTools(GameManager.Singleton.initialfireExtinguisherCount, GameManager.Singleton.fireExtinguisherPrefab);
         GenerateTools(GameManager.Singleton.initialfireAxeCount, GameManager.Singleton.fireAxePrefab);
     }
@@ -239,6 +240,32 @@ public class RoomGenerator : TileBehaviour
             return false;
         }
         return true;
+    }
+    private void GenerateGold(int amount)
+    {
+        List<Tile> possibleGoldTiles = new List<Tile>();
+        foreach (Tile tile in Tile.ActiveTiles.Values)
+        {
+            if (!CivillianCanSpawn(tile))
+            {
+                continue;
+            }
+            possibleGoldTiles.Add(tile);
+        }
+        if (possibleGoldTiles.Count <= 0)
+        {
+            return;
+        }
+        System.Random random = new System.Random();
+        possibleGoldTiles.OrderBy(a => random.Next()).ToList();
+        if (possibleGoldTiles.Count < amount)
+        {
+            amount = possibleGoldTiles.Count;
+        }
+        for (int i = 0; i < amount; i++)
+        {
+            Instantiate(GameManager.Singleton.goldPrefab, possibleGoldTiles[i].position, Quaternion.identity);
+        }
     }
     private void GenerateTools(int amount, GameObject prefab)
     {

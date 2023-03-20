@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     public GameObject fireExtinguisherPrefab;
     public GameObject fireAxePrefab;
     public GameObject furniturePrefab;
+    public GameObject goldPrefab;
     //[Header("Game Settings")]
 
     [Header("Game Start Settings")]
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
     public int initialFireCount = 3;
     public int initialFurnitureCount = 3;
     public int initialCivillianCount = 3;
+    public int initialGoldCount = 3;
     public int initialfireExtinguisherCount = 1;
     public int initialfireAxeCount = 1;
     //static game stats
@@ -87,6 +89,7 @@ public class GameManager : MonoBehaviour
         }
         if (deathsAllowed <= 0 || playerHealth <= 0)
         {
+            playerIsAlive = false;
             EndGame();
         }
     }
@@ -118,7 +121,7 @@ public class GameManager : MonoBehaviour
     public void NextLevel()
     {
         //regenerate player health
-        playerHealth = 3;
+        playerHealth = Mathf.Min(3, playerHealth + 1);
         //add 1 more death allowed if less than 5
         if (deathsAllowed < 5)
         {

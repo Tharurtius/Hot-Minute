@@ -16,6 +16,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Text itemText;
     [SerializeField] private Text goldCounter;
     [SerializeField] private Text scoreCounter;
+    private TileBehaviour selectedObject;
     public GameObject nextButton;
     public GameObject resumeButton;
     public GameObject pausePanel;
@@ -24,8 +25,16 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject foamPrefab;
     [SerializeField] private GameObject axeBlade;
     [SerializeField] private Sprite blankSprite;
+    [SerializeField] private GameObject selectedObjectPrefab;
 
-
+    private void Start()
+    {
+        selectedObject = Instantiate(selectedObjectPrefab).GetComponent<TileBehaviour>();
+    }
+    private void Update()
+    {
+        selectedObject.position = PlayerMovement.Singleton.transform.position + PlayerMovement.Singleton.transform.right * 0.5f;
+    }
     private void Awake()
     {
         //reference itself to the gamemanager
@@ -45,7 +54,7 @@ public class Inventory : MonoBehaviour
     public void GetItem()
     {
         //get tile
-        if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(PlayerMovement.Singleton.transform.position), out Tile tile))
+        if (Tile.ActiveTiles.TryGetValue(selectedObject.positionInt, out Tile tile))
         {
             //if item tile is on tile
             if (tile.attachedObjects.OfType<ItemTile>().Any())
@@ -70,7 +79,7 @@ public class Inventory : MonoBehaviour
                     //remove the tile
                     Destroy(tile.attachedObjects.OfType<ItemTile>().First().gameObject);
                     //instantiate last item to tile
-                    Instantiate(lastItem, PlayerMovement.Singleton.transform.position, Quaternion.identity);
+                    Instantiate(lastItem, selectedObject.position, Quaternion.identity);
                     //changeUI
                     SetupUI();
                 }
@@ -81,12 +90,12 @@ public class Inventory : MonoBehaviour
     public void DropItem()
     {
         //get tile
-        if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(PlayerMovement.Singleton.transform.position), out Tile tile))
+        if (Tile.ActiveTiles.TryGetValue(selectedObject.positionInt, out Tile tile))
         {
             //if something is in the inventory and tile has no items
             if (invSlot != null && !tile.attachedObjects.OfType<ItemTile>().Any())
             {
-                Instantiate(invSlot.itemTile, PlayerMovement.Singleton.transform.position, Quaternion.identity);
+                Instantiate(invSlot.itemTile, selectedObject.position, Quaternion.identity);
                 invSlot = null;
                 SetupUI();
             }
@@ -131,7 +140,7 @@ public class Inventory : MonoBehaviour
         else if (invSlot.itemID == "gold")
         {
             //get tile
-            if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(PlayerMovement.Singleton.transform.position), out Tile tile))
+            if (Tile.ActiveTiles.TryGetValue(selectedObject.positionInt, out Tile tile))
             {
                 //if at exit
                 if (AtExit())
@@ -148,7 +157,7 @@ public class Inventory : MonoBehaviour
         else if (invSlot.itemID == "person")
         {
             //get tile
-            if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(PlayerMovement.Singleton.transform.position), out Tile tile))
+            if (Tile.ActiveTiles.TryGetValue(selectedObject.positionInt, out Tile tile))
             {
                 //if at exit
                 if (AtExit())
@@ -191,7 +200,7 @@ public class Inventory : MonoBehaviour
     public bool AtExit()
     {
         //get tile
-        if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(PlayerMovement.Singleton.transform.position), out Tile tile))
+        if (Tile.ActiveTiles.TryGetValue(selectedObject.positionInt, out Tile tile))
         {
             foreach (TileBehaviour item in tile.attachedObjects)
             {

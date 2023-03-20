@@ -6,11 +6,27 @@ using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
+    [Header("Inventory slot")]
+    //actual inventory slot
     public Item invSlot;
+    [Header("UI shit")]
+    [SerializeField] private GameObject healthBar;
+    [SerializeField] private GameObject deathsBar;
     [SerializeField] private Image itemImage;
     [SerializeField] private Text itemText;
-
+    [SerializeField] private Text goldCounter;
+    [SerializeField] private Text scoreCounter;
+    [Header("Prefabs")]
     [SerializeField] private GameObject foamPrefab;
+    [SerializeField] private GameObject axeBlade;
+    [SerializeField] private Sprite blankSprite;
+
+
+    private void Awake()
+    {
+        //reference itself to the gamemanager
+        GameManager.Singleton.currentInventory = this;
+    }
 
     public void GetItem()
     {
@@ -23,7 +39,12 @@ public class Inventory : MonoBehaviour
                 //if inventory is empty
                 if (invSlot == null)
                 {
+                    //get item
                     invSlot = tile.attachedObjects.OfType<ItemTile>().First().item;
+                    //remove the tile
+                    Destroy(tile.attachedObjects.OfType<ItemTile>().First());
+                    //change UI
+                    SetupUI();
                 }
                 else
                 //if inventory is not empty
@@ -34,6 +55,8 @@ public class Inventory : MonoBehaviour
                     invSlot = tile.attachedObjects.OfType<ItemTile>().First().item;
                     //instantiate last item to tile
                     Instantiate(lastItem, PlayerMovement.Singleton.transform.position, Quaternion.identity);
+                    //changeUI
+                    SetupUI();
                 }
             }
         }
@@ -41,16 +64,89 @@ public class Inventory : MonoBehaviour
 
     public void DropItem()
     {
-        //if something is in the inventory
-        if (invSlot != null)
+        //get tile
+        if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(PlayerMovement.Singleton.transform.position), out Tile tile))
         {
-            Instantiate(invSlot.itemTile, PlayerMovement.Singleton.transform.position, Quaternion.identity);
-            invSlot = null;
+            //if something is in the inventory and tile has no items
+            if (invSlot != null && !tile.attachedObjects.OfType<ItemTile>().Any())
+            {
+                Instantiate(invSlot.itemTile, PlayerMovement.Singleton.transform.position, Quaternion.identity);
+                invSlot = null;
+            }
         }
     }
 
-    public void UseItem()
+    public void UseItem(Transform player)
     {
         //depends on the item
+        if (invSlot.itemID == "fireaxe")
+        {
+            //swing axe
+            GameObject blade = Instantiate(axeBlade, player.position + player.forward * 0.5f, player.rotation);
+            Destroy(blade, 0.5f);
+        }
+        else if (invSlot.itemID == "extinguisher")
+        {
+            //spray foam
+            GameObject foam;
+            for (int i = 0; i < 5; i++)
+            {
+                foam = Instantiate(foamPrefab, player.position, player.rotation);
+                Destroy(foam, 1f);
+            }
+            //destroy extinguisher
+            invSlot = null;
+            SetupUI();
+        }
+        else if (invSlot.itemID == "gold")
+        {
+            //get tile
+            if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(PlayerMovement.Singleton.transform.position), out Tile tile))
+            {
+                //if at exit
+                TileBehaviour exit = tile.attachedObjects.Where(obj => obj.name == "Exit").SingleOrDefault();
+                if (exit != null)
+                {
+                    //increase cash
+                    GameStats.cash += invSlot.itemValue;
+
+                    invSlot = null;
+                    SetupUI();
+                }
+            }
+        }
+        else if (invSlot.itemID == "person")
+        {
+            //get tile
+            if (Tile.ActiveTiles.TryGetValue(Vector2Int.RoundToInt(PlayerMovement.Singleton.transform.position), out Tile tile))
+            {
+                //if at exit
+                TileBehaviour exit = tile.attachedObjects.Where(obj => obj.name == "Exit").SingleOrDefault();
+                if (exit != null)
+                {
+                    invSlot = null;
+                    SetupUI();
+
+                    //gamemanager raise score and lower number of people in scene
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// Sets up ui to new item
+    /// </summary>
+    public void SetupUI()
+    {
+        //if empty
+        if (invSlot == null)
+        {
+            itemImage.sprite = blankSprite;
+            itemText.text = "Empty";
+        }
+        else
+        {
+            itemImage.sprite = invSlot.itemImage;
+            itemText.text = invSlot.itemName;
+        }
     }
 }

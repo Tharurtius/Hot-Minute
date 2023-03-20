@@ -17,6 +17,7 @@ public class PersonTile : ItemTile, IDamage, IFlash
         }
         if (health <= 0)
         {
+            //also lower score here
             Destroy(gameObject);
         }
     }

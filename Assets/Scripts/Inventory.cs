@@ -33,7 +33,10 @@ public class Inventory : MonoBehaviour
     }
     private void Update()
     {
-        selectedObject.position = PlayerMovement.Singleton.transform.position + PlayerMovement.Singleton.transform.right * 0.5f;
+        if (PlayerMovement.Singleton)
+        {
+            selectedObject.position = PlayerMovement.Singleton.transform.position + PlayerMovement.Singleton.transform.right * 0.5f;
+        }
     }
     private void Awake()
     {
@@ -220,7 +223,10 @@ public class Inventory : MonoBehaviour
         //should always be true
         if (healthBar.transform.childCount > 0)
         {
-            Destroy(healthBar.transform.GetChild(0).gameObject);
+            for (int i = 0; i < healthBar.transform.childCount - GameManager.playerHealth; i++)
+            {
+                Destroy(healthBar.transform.GetChild(i).gameObject);
+            }
         }
     }
     /// <summary>
@@ -231,7 +237,10 @@ public class Inventory : MonoBehaviour
         //should always be true
         if (deathsBar.transform.childCount > 0)
         {
-            Destroy(deathsBar.transform.GetChild(0).gameObject);
+            for (int i = 0; i < deathsBar.transform.childCount - GameManager.deathsAllowed; i++)
+            {
+                Destroy(deathsBar.transform.GetChild(i).gameObject);
+            }
         }
     }
 }

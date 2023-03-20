@@ -13,8 +13,11 @@ public class PersonTile : ItemTile, IDamage, IFlash
         set
         {
             currentPeopleCount = value;
-            //ui update
             GameManager.Singleton.currentInventory.SetupUI();
+            if (GameManager.deathsAllowed == 0)
+            {
+                return;
+            }
             if (value == 0)
             {
                 GameManager.Singleton.LevelWon();
@@ -32,12 +35,19 @@ public class PersonTile : ItemTile, IDamage, IFlash
         {
             //also lower score here
             Destroy(gameObject);
-            currentPeopleCount--;
+            GameManager.deathsAllowed--;
+            if (GameManager.deathsAllowed == -1)
+            {
+                GameManager.Singleton.EndGame();
+                return;
+            }
+            CurrentPeopleCount--;
             GameManager.Singleton.currentInventory.LowerCount();
         }
     }
-    private void Start()
+    //I hate this -Tim
+    public static void ResetCurrentPeopleCount()
     {
-        currentPeopleCount++;
+        currentPeopleCount = 0;
     }
 }

@@ -730,7 +730,7 @@ MonoBehaviour:
   foamPrefab: {fileID: 4810587957529776626, guid: df148f633eb38e04885d9f5f293bc5ea, type: 3}
   axeBlade: {fileID: 3388019376734017503, guid: dd951c683d04e844a9ce2310b18f23cb, type: 3}
   blankSprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  selectedObjectPrefab: {fileID: 0}
+  selectedObjectPrefab: {fileID: 3386511720653464129, guid: cf67612337b77744cb92bef53c0d2f7b, type: 3}
 --- !u!114 &197290324
 MonoBehaviour:
   m_ObjectHideFlags: 0

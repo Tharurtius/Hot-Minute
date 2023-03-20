@@ -37,6 +37,7 @@ public class RoomGenerator : TileBehaviour
     private void Start()
     {
         Tile.ActiveTiles.Clear();
+        PersonTile.ResetCurrentPeopleCount();
         roomSize = new Vector2Int(Random.Range(minRoomSize.x, maxRoomSize.x), Random.Range(minRoomSize.y, maxRoomSize.y));
         GenerateWallsAndFloors(roomSize + Vector2Int.one * 2);
         GenerateDoor();
@@ -208,9 +209,14 @@ public class RoomGenerator : TileBehaviour
         {
             amount = possibleCivillianTiles.Count;
         }
+        if (amount <= 1)//bad
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
         for (int i = 0; i < amount; i++)
         {
             Instantiate(GameManager.Singleton.civillianPrefab, possibleCivillianTiles[i].position, Quaternion.identity);
+            PersonTile.CurrentPeopleCount++;
         }
     }
     private bool CivillianCanSpawn(Tile tile)

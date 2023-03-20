@@ -222,4 +222,8 @@ public class RoomGenerator : TileBehaviour
             Instantiate(prefab, possibleToolTiles[i].position, Quaternion.identity);
         }
     }
+    private void GenerateFurniture(int count)
+    {
+
+    }
 }

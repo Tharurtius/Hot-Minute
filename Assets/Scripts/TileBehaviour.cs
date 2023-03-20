@@ -13,6 +13,7 @@ public class TileBehaviour : MonoBehaviour
         }
         Tile.ActiveTiles[tilePosition].attachedObjects.Add(this);
         transform.position = position;
+        _tile = Tile.ActiveTiles[tilePosition];
     }
     private Tile _tile;
     public Tile tile

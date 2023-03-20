@@ -68,6 +68,7 @@ public class UpgradeManager : MonoBehaviour
     public void UpgradeScreen()
     {
         upgradePanel.SetActive(true);
+        SetupUI();
         pausePanel.SetActive(false);
     }
 }

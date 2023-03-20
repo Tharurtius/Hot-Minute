@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public GameObject civillianPrefab;
     public GameObject fireExtinguisherPrefab;
     public GameObject fireAxePrefab;
+    public GameObject furniturePrefab;
     //[Header("Game Settings")]
 
     [Header("Game Start Settings")]
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int startingDeathsAllowed = 5;
     [Header("Level Generation")]
     public int initialFireCount = 3;
+    public int initialFurnitureCount = 3;
     public int initialCivillianCount = 3;
     public int initialfireExtinguisherCount = 1;
     public int initialfireAxeCount = 1;

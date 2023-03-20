@@ -39,6 +39,7 @@ public class RoomGenerator : TileBehaviour
         GenerateWallsAndFloors(roomSize + Vector2Int.one * 2);
         GenerateDoor();
         GenerateFire(GameManager.Singleton.initialFireCount);
+        GenerateFurniture(GameManager.Singleton.initialFurnitureCount);
         GenerateCivillians(GameManager.Singleton.initialCivillianCount);
         GenerateTools(GameManager.Singleton.initialfireExtinguisherCount, GameManager.Singleton.fireExtinguisherPrefab);
         GenerateTools(GameManager.Singleton.initialfireAxeCount, GameManager.Singleton.fireAxePrefab);
@@ -131,6 +132,56 @@ public class RoomGenerator : TileBehaviour
             }
         }
     }
+    private void GenerateFurniture(int amount)
+    {
+        List<Tile> possibleFurnitureTiles = new List<Tile>();
+        foreach (Tile tile in Tile.ActiveTiles.Values)
+        {
+            if (Vector2.Distance(tile.position, exit.position) < 2.5f)
+            {
+                continue;
+            }
+            if (tile.attachedObjects.OfType<Fire>().Any())
+            {
+                continue;
+            }
+            if (tile.attachedObjects.OfType<Furniture>().Any())
+            {
+                continue;
+            }
+            if (tile.attachedObjects.OfType<Wall>().Any())
+            {
+                continue;
+            }
+            possibleFurnitureTiles.Add(tile);
+        }
+        if (possibleFurnitureTiles.Count < amount)
+        {
+            amount = possibleFurnitureTiles.Count;
+        }
+        possibleFurnitureTiles.Sort((x, y) => Random.value.CompareTo(0.5f));
+        for (int i = 0; i < amount; i++)
+        {
+            Instantiate(GameManager.Singleton.furniturePrefab, possibleFurnitureTiles[i].position, Quaternion.identity);
+            List<Tile> growTiles = possibleFurnitureTiles[i].AdjacentTiles();
+            growTiles.Sort((x, y) => Random.value.CompareTo(0.5f));
+            foreach (Tile otherTile in growTiles)
+            {
+                if (possibleFurnitureTiles.Contains(otherTile))
+                {
+                    if (Random.value > 0.5f)
+                    {
+                        Instantiate(GameManager.Singleton.furniturePrefab, otherTile.position, Quaternion.identity);
+                        if (possibleFurnitureTiles.Count < amount)
+                        {
+                            amount = possibleFurnitureTiles.Count;
+                        }
+                        possibleFurnitureTiles.Remove(otherTile);
+                    }
+                }
+            }
+        }
+    }
     private void GenerateCivillians(int amount)
     {
         List<Tile> possibleCivillianTiles = new List<Tile>();
@@ -170,6 +221,14 @@ public class RoomGenerator : TileBehaviour
         {
             return false;
         }
+        if (tile.attachedObjects.OfType<Furniture>().Any())
+        {
+            return false;
+        }
+        if (tile.AdjacentTileBehaviours().OfType<Fire>().Any())
+        {
+            return false;
+        }
         if (Vector2.Distance(tile.position, exit.position) < 4)
         {
             return false;
@@ -201,6 +260,10 @@ public class RoomGenerator : TileBehaviour
             {
                 continue;
             }
+            if (tile.attachedObjects.OfType<Furniture>().Any())
+            {
+                continue;
+            }
             if (tile.attachedObjects.Contains(exit))
             {
                 continue;
@@ -221,9 +284,5 @@ public class RoomGenerator : TileBehaviour
         {
             Instantiate(prefab, possibleToolTiles[i].position, Quaternion.identity);
         }
-    }
-    private void GenerateFurniture(int count)
-    {
-
     }
 }

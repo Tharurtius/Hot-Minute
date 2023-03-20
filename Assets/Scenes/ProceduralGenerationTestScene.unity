@@ -552,12 +552,14 @@ MonoBehaviour:
   civillianPrefab: {fileID: 7769343021131278071, guid: aabb1a9e6a85f6847b7cb57d2761c38a, type: 3}
   fireExtinguisherPrefab: {fileID: 4380169087634757688, guid: c2cd8c69acd680e4a8b1b52473c8c4a8, type: 3}
   fireAxePrefab: {fileID: 675100079568120422, guid: 3b44584ac5a88124b9d9b2bf7478e188, type: 3}
+  furniturePrefab: {fileID: 671335063939442079, guid: fc8c8140c55669547ab34b1e941d501f, type: 3}
   startingPlayerHealth: 3
   startingCash: 0
   startingScore: 0
   startingDifficulty: 0
   startingDeathsAllowed: 5
   initialFireCount: 3
+  initialFurnitureCount: 2
   initialCivillianCount: 3
   initialfireExtinguisherCount: 1
   initialfireAxeCount: 0

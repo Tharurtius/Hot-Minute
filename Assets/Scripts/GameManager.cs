@@ -40,11 +40,12 @@ public class GameManager : MonoBehaviour
     //[Header("Game Settings")]
 
     [Header("Game Start Settings")]
-    [SerializeField] public int startingPlayerHealth = 3;
-    [SerializeField] public Item startingItem;
-    [SerializeField] public float startingCash = 0f;
-    [SerializeField] public int startingScore = 0;
-    [SerializeField] public int startingDifficulty = 0;
+    [SerializeField] private int startingPlayerHealth = 3;
+    [SerializeField] private Item startingItem;
+    [SerializeField] private float startingCash = 0f;
+    [SerializeField] private int startingScore = 0;
+    [SerializeField] private int startingDifficulty = 0;
+    [SerializeField] private int startingDeathsAllowed = 5;
     [Header("Level Generation")]
     public int initialFireCount = 3;
     public int initialCivillianCount = 3;
@@ -57,8 +58,10 @@ public class GameManager : MonoBehaviour
     public static int score = 0;
     public static int difficulty = 0;
     public static bool playerIsAlive = false;
+    public static int deathsAllowed = 5;
     //scene references
     [System.NonSerialized] public Camera mainCamera;
+    [System.NonSerialized] public Inventory currentInventory;
     private void OnValidate()
     {
         
@@ -88,6 +91,8 @@ public class GameManager : MonoBehaviour
             currentItem = Singleton.startingItem;
             cash = Singleton.startingCash;
             difficulty = Singleton.startingDifficulty;
+            score = Singleton.startingScore;
+            deathsAllowed = Singleton.startingDeathsAllowed;
             return;
         }
         playerHealth = 3;
@@ -95,6 +100,7 @@ public class GameManager : MonoBehaviour
         cash = 0f;
         score = 0;
         difficulty = 0;
+        deathsAllowed = 5;
     }
 }
 public interface IDamage

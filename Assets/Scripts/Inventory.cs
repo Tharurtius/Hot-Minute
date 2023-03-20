@@ -108,7 +108,7 @@ public class Inventory : MonoBehaviour
                 if (exit != null)
                 {
                     //increase cash
-                    GameStats.cash += invSlot.itemValue;
+                    GameManager.cash += invSlot.itemValue;
 
                     invSlot = null;
                     SetupUI();

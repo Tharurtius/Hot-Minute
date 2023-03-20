@@ -35,17 +35,30 @@ public class GameManager : MonoBehaviour
     public GameObject firePrefab;
     public GameObject playerPrefab;
     public GameObject civillianPrefab;
+    public GameObject fireExtinguisherPrefab;
+    public GameObject fireAxePrefab;
     //[Header("Game Settings")]
 
     [Header("Game Start Settings")]
-    public int startingPlayerHealth = 3;
-    public Item startingItem;
-    public float startingCash = 0f;
-    public int startingDifficulty = 0;
+    [SerializeField] public int startingPlayerHealth = 3;
+    [SerializeField] public Item startingItem;
+    [SerializeField] public float startingCash = 0f;
+    [SerializeField] public int startingScore = 0;
+    [SerializeField] public int startingDifficulty = 0;
     [Header("Level Generation")]
     public int initialFireCount = 3;
     public int initialCivillianCount = 3;
-    public Camera mainCamera;
+    public int initialfireExtinguisherCount = 1;
+    public int initialfireAxeCount = 1;
+    //static game stats
+    public static int playerHealth = 3;
+    public static Item currentItem;
+    public static float cash = 0f;
+    public static int score = 0;
+    public static int difficulty = 0;
+    public static bool playerIsAlive = false;
+    //scene references
+    [System.NonSerialized] public Camera mainCamera;
     private void OnValidate()
     {
         
@@ -56,34 +69,31 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        if (!GameStats.playerIsAlive)
+        if (!playerIsAlive)
         {
-            GameStats.Reset();
+            ResetStats();
         }
         mainCamera = Camera.main;
     }
-}
-public static class GameStats
-{
-    public static int playerHealth = 3;
-    public static Item currentItem;
-    public static float cash = 0f;
-    public static int difficulty = 0;
-    public static bool playerIsAlive = false;
-    public static void Reset()
+    /// <summary>
+    /// Resets the game stats to default values
+    /// If a singleton of the game manager exists in the current scene, it sets the values to the starting values of the instance
+    /// </summary>
+    public static void ResetStats()
     {
         playerIsAlive = true;
-        if (GameManager.Singleton)
+        if (Singleton)
         {
-            playerHealth = GameManager.Singleton.startingPlayerHealth;
-            currentItem = GameManager.Singleton.startingItem;
-            cash = GameManager.Singleton.startingCash;
-            difficulty = GameManager.Singleton.startingDifficulty;
+            playerHealth = Singleton.startingPlayerHealth;
+            currentItem = Singleton.startingItem;
+            cash = Singleton.startingCash;
+            difficulty = Singleton.startingDifficulty;
             return;
         }
         playerHealth = 3;
         currentItem = null;
         cash = 0f;
+        score = 0;
         difficulty = 0;
     }
 }

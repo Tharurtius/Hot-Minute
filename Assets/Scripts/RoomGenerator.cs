@@ -174,4 +174,8 @@ public class RoomGenerator : TileBehaviour
         }
         return true;
     }
+    private void GenerateTools()
+    {
+
+    }
 }

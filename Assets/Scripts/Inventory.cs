@@ -101,7 +101,7 @@ public class Inventory : MonoBehaviour
             GameObject foam;
             for (int i = 0; i < 5; i++)
             {
-                foam = Instantiate(foamPrefab, player.position, player.rotation);
+                foam = Instantiate(foamPrefab, player.position + player.right, player.rotation);
                 Destroy(foam, 1f);
             }
             //destroy extinguisher
@@ -135,6 +135,7 @@ public class Inventory : MonoBehaviour
                 if (AtExit())
                 {
                     invSlot = null;
+                    PersonTile.CurrentPeopleCount--;
                     SetupUI();
 
                     //gamemanager raise score and lower number of people in scene

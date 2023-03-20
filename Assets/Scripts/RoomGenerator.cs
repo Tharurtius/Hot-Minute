@@ -113,7 +113,6 @@ public class RoomGenerator : TileBehaviour
             Tile newTileOnFire = possibleFireTiles[Random.Range(0, possibleFireTiles.Count)];
             //use forcespread since we know that we know it is a valid tile
             Fire newFire = Fire.ForceSpread(newTileOnFire.positionInt);
-            Debug.Log(newFire.position);
             possibleFireTiles.Remove(newTileOnFire);
             //bruh I didn't want to this much nesting oh god
             for (int j = 0; j < Random.Range(0, 4); j++)

@@ -41,6 +41,11 @@ public class Fire : TileBehaviour
         //if fire gets hit by foam
         if (collision.gameObject.CompareTag("Foam"))
         {
+            if (GetComponent<Collider2D>().enabled == false)
+            {
+                return;
+            }
+            GetComponent<Collider2D>().enabled = false;
             Destroy(collision.gameObject);
             Destroy(gameObject);
         }

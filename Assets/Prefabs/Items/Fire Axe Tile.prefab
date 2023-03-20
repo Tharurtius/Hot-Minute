@@ -98,5 +98,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 29c715548d160f8458fc4de580e53c9d, type: 2}
-  health: 100
-  damageCoolDown: 100
+  health: 10
+  damageCoolDown: 1

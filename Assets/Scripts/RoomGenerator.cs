@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class RoomGenerator : TileBehaviour
 {
@@ -35,6 +36,7 @@ public class RoomGenerator : TileBehaviour
     //[Header("")]
     private void Start()
     {
+        Tile.ActiveTiles.Clear();
         roomSize = new Vector2Int(Random.Range(minRoomSize.x, maxRoomSize.x), Random.Range(minRoomSize.y, maxRoomSize.y));
         GenerateWallsAndFloors(roomSize + Vector2Int.one * 2);
         GenerateDoor();
@@ -159,7 +161,10 @@ public class RoomGenerator : TileBehaviour
         {
             amount = possibleFurnitureTiles.Count;
         }
-        possibleFurnitureTiles.Sort((x, y) => Random.value.CompareTo(0.5f));
+        System.Random random = new System.Random();
+        possibleFurnitureTiles.OrderBy(a => random.Next()).ToList();
+
+        //possibleFurnitureTiles.Sort((x, y) => Random.value.CompareTo(0.5f));
         for (int i = 0; i < amount; i++)
         {
             Instantiate(GameManager.Singleton.furniturePrefab, possibleFurnitureTiles[i].position, Quaternion.identity);
@@ -275,7 +280,9 @@ public class RoomGenerator : TileBehaviour
             possibleToolTiles.Add(tile);
         }
         //possibleToolTiles.Sort((x, y) => Vector2.Distance(y.position, exit.position).CompareTo(Vector2.Distance(x.position, exit.position)));
-        possibleToolTiles.Sort((x, y) => Random.value.CompareTo(0.5f));
+        //possibleToolTiles.Sort((x, y) => Random.value.CompareTo(0.5f));
+        System.Random random = new System.Random();
+        possibleToolTiles.OrderBy(a => random.Next()).ToList();
         if (possibleToolTiles.Count < amount)
         {
             amount = possibleToolTiles.Count;

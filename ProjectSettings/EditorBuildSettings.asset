@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main Menu.unity
     guid: 38b66bb422a82b34e916bcd56765270e
+  - enabled: 1
+    path: Assets/Scenes/ProceduralGenerationTestScene.unity
+    guid: 006320c3bd0980a439bb30d11ecacee5
   m_configObjects: {}

@@ -89,10 +89,6 @@ public class GameManager : MonoBehaviour
         {
             EndGame();
         }
-        if (PersonTile.CurrentPeopleCount <= 0)
-        {
-            LevelWon();
-        }
     }
     /// <summary>
     /// Resets the game stats to default values

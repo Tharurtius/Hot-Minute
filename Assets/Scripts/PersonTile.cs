@@ -15,6 +15,10 @@ public class PersonTile : ItemTile, IDamage, IFlash
             currentPeopleCount = value;
             //ui update
             GameManager.Singleton.currentInventory.SetupUI();
+            if (value == 0)
+            {
+                GameManager.Singleton.LevelWon();
+            }
         }
     }
     public Color damageColour { get => _damageColour; set => _damageColour = value; }

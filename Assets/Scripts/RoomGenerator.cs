@@ -40,6 +40,8 @@ public class RoomGenerator : TileBehaviour
         GenerateDoor();
         GenerateFire(GameManager.Singleton.initialFireCount);
         GenerateCivillians(GameManager.Singleton.initialCivillianCount);
+        GenerateTools(GameManager.Singleton.initialfireExtinguisherCount, GameManager.Singleton.fireExtinguisherPrefab);
+        GenerateTools(GameManager.Singleton.initialfireAxeCount, GameManager.Singleton.fireAxePrefab);
     }
     private void OnValidate()
     {
@@ -111,6 +113,7 @@ public class RoomGenerator : TileBehaviour
             Tile newTileOnFire = possibleFireTiles[Random.Range(0, possibleFireTiles.Count)];
             //use forcespread since we know that we know it is a valid tile
             Fire newFire = Fire.ForceSpread(newTileOnFire.positionInt);
+            Debug.Log(newFire.position);
             possibleFireTiles.Remove(newTileOnFire);
             //bruh I didn't want to this much nesting oh god
             for (int j = 0; j < Random.Range(0, 4); j++)
@@ -151,7 +154,7 @@ public class RoomGenerator : TileBehaviour
         }
         for (int i = 0; i < amount; i++)
         {
-            Instantiate(GameManager.Singleton.civillianPrefab, possibleCivillianTiles[i].position, Quaternion.identity).GetComponent<Fire>();
+            Instantiate(GameManager.Singleton.civillianPrefab, possibleCivillianTiles[i].position, Quaternion.identity);
         }
     }
     private bool CivillianCanSpawn(Tile tile)
@@ -174,8 +177,50 @@ public class RoomGenerator : TileBehaviour
         }
         return true;
     }
-    private void GenerateTools()
+    private void GenerateTools(int amount, GameObject prefab)
     {
-
+        List<Tile> possibleToolTiles = new List<Tile>();
+        foreach (Tile tile in Tile.ActiveTiles.Values)
+        {
+            if (Vector2.Distance(tile.position, exit.position) > 4f)
+            {
+                continue;
+            }
+            if (!tile.AdjacentTileBehaviours().OfType<Wall>().Any())
+            {
+                continue;
+            }
+            if (tile.attachedObjects.OfType<Wall>().Any())
+            {
+                continue;
+            }
+            if (tile.attachedObjects.OfType<Fire>().Any())
+            {
+                continue;
+            }
+            if (tile.attachedObjects.OfType<ItemTile>().Any())
+            {
+                continue;
+            }
+            if (tile.attachedObjects.Contains(exit))
+            {
+                continue;
+            }
+            if (tile.AdjacentTileBehaviours().Contains(exit))
+            {
+                continue;
+            }
+            possibleToolTiles.Add(tile);
+        }
+        //possibleToolTiles.Sort((x, y) => Vector2.Distance(y.position, exit.position).CompareTo(Vector2.Distance(x.position, exit.position)));
+        possibleToolTiles.Sort((x, y) => Random.value.CompareTo(0.5f));
+        if (possibleToolTiles.Count < amount)
+        {
+            amount = possibleToolTiles.Count;
+        }
+        for (int i = 0; i < amount; i++)
+        {
+            Instantiate(prefab, possibleToolTiles[i].position, Quaternion.identity);
+        }
     }
 }

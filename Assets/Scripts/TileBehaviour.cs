@@ -75,4 +75,29 @@ public class Tile
         positionInt = vector2Int;
     }
     #endregion
+    public List<Tile> AdjacentTiles()
+    {
+        Vector2Int[] fourDirections = new Vector2Int[4] { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+        List<Tile> adjacentTiles = new List<Tile>();
+        foreach (Vector2Int direction in fourDirections)
+        {
+            if (ActiveTiles.TryGetValue(positionInt + direction, out Tile tilecheck))
+            {
+                adjacentTiles.Add(tilecheck);
+            }
+        }
+        return adjacentTiles;
+    }
+    public List<TileBehaviour> AdjacentTileBehaviours()
+    {
+        List<TileBehaviour> adjacentTileBehaviours = new List<TileBehaviour>();
+        foreach (Tile tile in AdjacentTiles())
+        {
+            foreach (TileBehaviour tileBehaviour in tile.attachedObjects)
+            {
+                adjacentTileBehaviours.Add(tileBehaviour);
+            }
+        }
+        return adjacentTileBehaviours;
+    }
 }

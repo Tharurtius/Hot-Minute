@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Start Settings")]
     [SerializeField] private int startingPlayerHealth = 3;
-    [SerializeField] private Item startingItem;
     [SerializeField] private float startingCash = 0f;
     [SerializeField] private int startingScore = 0;
     [SerializeField] private int startingDifficulty = 0;
@@ -53,7 +52,6 @@ public class GameManager : MonoBehaviour
     public int initialfireAxeCount = 1;
     //static game stats
     public static int playerHealth = 3;
-    public static Item currentItem;
     public static float cash = 0f;
     public static int score = 0;
     public static int difficulty = 0;
@@ -88,7 +86,6 @@ public class GameManager : MonoBehaviour
         if (Singleton)
         {
             playerHealth = Singleton.startingPlayerHealth;
-            currentItem = Singleton.startingItem;
             cash = Singleton.startingCash;
             difficulty = Singleton.startingDifficulty;
             score = Singleton.startingScore;
@@ -96,53 +93,9 @@ public class GameManager : MonoBehaviour
             return;
         }
         playerHealth = 3;
-        currentItem = null;
         cash = 0f;
         score = 0;
         difficulty = 0;
         deathsAllowed = 5;
-    }
-}
-public interface IDamage
-{
-    int health { get; set; }
-    float lastTimeDamaged { get; set; }
-    float damageCoolDown { get; set; }
-    void TakeDamage()
-    {
-        if (lastTimeDamaged + damageCoolDown > Time.time)
-        {
-            return;
-        }
-        health--;
-        lastTimeDamaged = Time.time;
-        if (health <= 0 && this is MonoBehaviour)
-        {
-            GameObject.Destroy(((MonoBehaviour)this).gameObject);
-        }
-        OnDamageTaken();
-    }
-    void OnDamageTaken() { }
-}
-public interface IFlash
-{
-    Color damageColour { get; set; }
-    void Flash(SpriteRenderer spriteRenderer)
-    {
-        if (this is MonoBehaviour)
-        {
-            ((MonoBehaviour)this).StartCoroutine(FlashCorutine(spriteRenderer));
-        }
-    }
-    private IEnumerator FlashCorutine(SpriteRenderer spriteRenderer)
-    {
-        Color originalColour = spriteRenderer.color;
-        spriteRenderer.color = damageColour;
-        for (int i = 0; i < 10; i++)
-        {
-            yield return new WaitForFixedUpdate();
-            spriteRenderer.color = Color.Lerp(damageColour, originalColour, i / 12f);
-        }
-        spriteRenderer.color = originalColour;
     }
 }
